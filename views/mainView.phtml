@@ -10,7 +10,7 @@
 <body>
     <?php require __DIR__ . '/header.phtml'; ?>
 
-    <?php if ($esAdmin): ?>
+    <?php if ($usuario->esAdmin()): ?>
         <!-- Solo el admin ve el formulario para crear tareas -->
         <div class="formulario">
             <h2>Nueva tarea</h2>
@@ -57,7 +57,7 @@
                     <td><?= htmlspecialchars($tarea->getNombreUsuario()) ?></td>
                     <td>
                         <!-- Si la tarea es mía, puedo aceptarla o completarla -->
-                        <?php if ($tarea->getIdUsuario() == $_SESSION['id_usuario']): ?>
+                        <?php if ($tarea->getIdUsuario() == $usuario->getId()): ?>
                             <?php if ($tarea->getEstado() == 'pendiente'): ?>
                                 <form action="index.php" method="post">
                                     <input type="hidden" name="aceptar" value="<?= $tarea->getId() ?>">
@@ -73,7 +73,7 @@
                         <?php endif; ?>
 
                         <!-- El admin puede editar y borrar cualquier tarea -->
-                        <?php if ($esAdmin): ?>
+                        <?php if ($usuario->esAdmin()): ?>
                             <a href="index.php?var=4&id=<?= $tarea->getId() ?>" class="btn">Editar</a>
                             <form action="index.php" method="post" onsubmit="return confirm('¿Borrar esta tarea?')">
                                 <input type="hidden" name="borrar" value="<?= $tarea->getId() ?>">

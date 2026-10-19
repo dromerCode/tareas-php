@@ -32,4 +32,9 @@ class Usuario{
     public function getRol(){
         return $this->rol;
     }
+
+    // Devuelve true si el usuario es administrador
+    public function esAdmin(){
+        return $this->rol == 'admin';
+    }
 }
