@@ -1,0 +1,36 @@
+<!-- Formulario para crear una tarea: $usuarios y $mensaje vienen de tareaController -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva tarea</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+    <div class="formulario">
+        <a href="index.php?page=tareas">&larr; Volver</a>
+        <h1>Nueva tarea</h1>
+        <form action="index.php?page=nueva_tarea" method="post">
+            <label for="titulo">Título:</label>
+            <input type="text" name="titulo" id="titulo" required>
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion" rows="4"></textarea>
+            <label for="fecha_limite">Fecha límite:</label>
+            <input type="date" name="fecha_limite" id="fecha_limite">
+            <label for="id_asignado">Asignar a:</label>
+            <select name="id_asignado" id="id_asignado">
+                <option value="">Nadie (cualquiera puede aceptarla)</option>
+                <?php foreach ($usuarios as $u): ?>
+                    <option value="<?= $u->getIdUsuario() ?>"><?= htmlspecialchars($u->getNombre()) ?> <?= htmlspecialchars($u->getApellido()) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="submit" class="btn" value="Crear tarea">
+        </form>
+        <?php if ($mensaje): ?>
+            <p style="color: red;"><strong><?= htmlspecialchars($mensaje) ?></strong></p>
+        <?php endif; ?>
+    </div>
+</body>
+</html>

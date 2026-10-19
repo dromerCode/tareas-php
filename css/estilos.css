@@ -1,0 +1,165 @@
+/* Estilos generales */
+body {
+    font-family: sans-serif;
+    margin: 2rem;
+    background: whitesmoke;
+    color: black;
+}
+
+/* Cabecera compartida */
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid darkslategray;
+}
+
+.cabecera h1 {
+    margin: 0;
+}
+
+.cabecera h1 a {
+    text-decoration: none;
+    color: darkslategray;
+}
+
+.cabecera nav a {
+    color: teal;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cabecera nav a:hover {
+    text-decoration: underline;
+}
+
+/* Pestañas de la lista de tareas */
+.pestanas a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-right: 0.3rem;
+    background: white;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    color: darkslategray;
+    text-decoration: none;
+}
+
+.pestanas a.activa {
+    background: darkslategray;
+    color: white;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    background: teal;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn:hover {
+    background: darkslategray;
+}
+
+.btn-aceptar {
+    background: green;
+}
+
+.btn-borrar {
+    background: firebrick;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: white;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid lightgray;
+}
+
+th {
+    background: darkslategray;
+    color: white;
+}
+
+td small {
+    color: gray;
+}
+
+/* Botones de acciones uno al lado del otro */
+.acciones form {
+    display: inline;
+}
+
+/* Etiqueta de color según el estado */
+.estado {
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    color: white;
+}
+
+.pendiente {
+    background: orange;
+}
+
+.aceptada {
+    background: royalblue;
+}
+
+.completada {
+    background: green;
+}
+
+/* Formularios */
+.formulario {
+    background: white;
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 1.5rem auto;
+}
+
+.formulario h1 {
+    font-size: 1.5rem;
+    color: darkslategray;
+}
+
+.formulario label {
+    display: block;
+    margin-top: 0.8rem;
+    margin-bottom: 0.2rem;
+    font-weight: bold;
+}
+
+.formulario input[type="text"],
+.formulario input[type="email"],
+.formulario input[type="password"],
+.formulario input[type="date"],
+.formulario select,
+.formulario textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid gray;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formulario input[type="submit"] {
+    margin-top: 1.2rem;
+    width: 100%;
+}

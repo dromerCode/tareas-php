@@ -1,0 +1,19 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: tareas-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASS}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - tareas_data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./db/datos.sql:/docker-entrypoint-initdb.d/02-datos.sql:ro
+
+volumes:
+  tareas_data:

@@ -1,0 +1,90 @@
+<!-- Lista de tareas: $tareas, $ver, $miId y $esAdmin vienen de tareaController -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+
+    <!-- Pestañas: la activa lleva la clase "activa" -->
+    <div class="pestanas">
+        <a href="index.php?page=tareas&ver=mias" class="<?php if ($ver == 'mias') echo 'activa'; ?>">Asignadas a mí</a>
+        <a href="index.php?page=tareas&ver=creadas" class="<?php if ($ver == 'creadas') echo 'activa'; ?>">Creadas por mí</a>
+        <a href="index.php?page=tareas&ver=sin_asignar" class="<?php if ($ver == 'sin_asignar') echo 'activa'; ?>">Sin asignar</a>
+        <?php if ($esAdmin): ?>
+            <a href="index.php?page=tareas&ver=todas" class="<?php if ($ver == 'todas') echo 'activa'; ?>">Todas</a>
+        <?php endif; ?>
+    </div>
+
+    <?php if (empty($tareas)): ?>
+        <p>No hay tareas aquí.</p>
+    <?php else: ?>
+        <table>
+            <tr>
+                <th>Tarea</th>
+                <th>Estado</th>
+                <th>Fecha límite</th>
+                <th>Creada por</th>
+                <th>Asignada a</th>
+                <th>Acciones</th>
+            </tr>
+            <?php foreach ($tareas as $t): ?>
+                <tr>
+                    <td>
+                        <strong><?= htmlspecialchars($t['titulo']) ?></strong>
+                        <br>
+                        <small><?= htmlspecialchars($t['descripcion'] ?? '') ?></small>
+                    </td>
+                    <td><span class="estado <?= $t['estado'] ?>"><?= $t['estado'] ?></span></td>
+                    <td>
+                        <?php if ($t['fecha_limite']): ?>
+                            <?= date('d/m/Y', strtotime($t['fecha_limite'])) ?>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
+                    <td><?= htmlspecialchars($t['nombre_creador']) ?></td>
+                    <td>
+                        <?php if ($t['nombre_asignado']): ?>
+                            <?= htmlspecialchars($t['nombre_asignado']) ?>
+                        <?php else: ?>
+                            <em>Nadie</em>
+                        <?php endif; ?>
+                    </td>
+                    <td class="acciones">
+                        <!-- Aceptar: si está pendiente y es mía o de nadie -->
+                        <?php if ($t['estado'] == 'pendiente' && ($t['id_asignado'] == $miId || $t['id_asignado'] == null)): ?>
+                            <form action="index.php?page=aceptar_tarea" method="post">
+                                <input type="hidden" name="id_tarea" value="<?= $t['id_tarea'] ?>">
+                                <input type="submit" class="btn btn-aceptar" value="Aceptar">
+                            </form>
+                        <?php endif; ?>
+
+                        <!-- Completar: si la he aceptado yo -->
+                        <?php if ($t['estado'] == 'aceptada' && $t['id_asignado'] == $miId): ?>
+                            <form action="index.php?page=completar_tarea" method="post">
+                                <input type="hidden" name="id_tarea" value="<?= $t['id_tarea'] ?>">
+                                <input type="submit" class="btn btn-aceptar" value="Completar">
+                            </form>
+                        <?php endif; ?>
+
+                        <!-- Editar y borrar: quien la creó o el admin -->
+                        <?php if ($t['id_creador'] == $miId || $esAdmin): ?>
+                            <a href="index.php?page=editar_tarea&id=<?= $t['id_tarea'] ?>" class="btn">Editar</a>
+                            <form action="index.php?page=borrar_tarea" method="post" onsubmit="return confirm('¿Seguro que quieres borrar esta tarea?')">
+                                <input type="hidden" name="id_tarea" value="<?= $t['id_tarea'] ?>">
+                                <input type="hidden" name="ver" value="<?= $ver ?>">
+                                <input type="submit" class="btn btn-borrar" value="Borrar">
+                            </form>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
+</body>
+</html>
