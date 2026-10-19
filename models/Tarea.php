@@ -1,25 +1,28 @@
 <?php
-class Tarea{
-    private $id_tarea;
-    private string $titulo;
-    private $descripcion;
-    private string $estado;
-    private $fecha_limite;
-    private $id_creador;
-    private $id_asignado;
 
-    public function __construct($id, string $titulo, $descripcion, string $estado, $fecha_limite, $id_creador, $id_asignado){
-        $this->id_tarea = $id;
+// Clase que representa una tarea.
+class Tarea{
+    private $id;
+    private $titulo;
+    private $descripcion;
+    // 'pendiente', 'aceptada' o 'completada'
+    private $estado;
+    // id del usuario que tiene asignada la tarea
+    private $idUsuario;
+    // Nombre del usuario asignado, para enseñarlo en la lista
+    private $nombreUsuario;
+
+    public function __construct($id, $titulo, $descripcion, $estado, $idUsuario, $nombreUsuario){
+        $this->id = $id;
         $this->titulo = $titulo;
         $this->descripcion = $descripcion;
         $this->estado = $estado;
-        $this->fecha_limite = $fecha_limite;
-        $this->id_creador = $id_creador;
-        $this->id_asignado = $id_asignado;
+        $this->idUsuario = $idUsuario;
+        $this->nombreUsuario = $nombreUsuario;
     }
 
     public function getId(){
-        return $this->id_tarea;
+        return $this->id;
     }
     public function getTitulo(){
         return $this->titulo;
@@ -30,13 +33,10 @@ class Tarea{
     public function getEstado(){
         return $this->estado;
     }
-    public function getFechaLimite(){
-        return $this->fecha_limite;
+    public function getIdUsuario(){
+        return $this->idUsuario;
     }
-    public function getIdCreador(){
-        return $this->id_creador;
-    }
-    public function getIdAsignado(){
-        return $this->id_asignado;
+    public function getNombreUsuario(){
+        return $this->nombreUsuario;
     }
 }

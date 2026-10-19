@@ -1,4 +1,4 @@
-<!-- Vista de login: página aparte solo con el formulario para iniciar sesión -->
+<!-- Vista de login -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,24 +9,19 @@
 </head>
 <body>
     <?php require __DIR__ . '/header.phtml'; ?>
-    <?php if (isset($_SESSION['id_usuario'])): ?>
-        <!-- Ya ha iniciado sesión: no tiene sentido enseñar el formulario -->
-        <p>Ya has iniciado sesión. <a href="index.php?page=tareas">Ver tus tareas</a></p>
-    <?php else: ?>
-        <div class="formulario">
-            <h1>Iniciar sesión</h1>
-            <form action="index.php?page=login" method="post">
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" required>
-                <label for="contrasena">Contraseña:</label>
-                <input type="password" name="contrasena" id="contrasena" required>
-                <input type="submit" class="btn" value="Iniciar sesión">
-            </form>
-            <?php if ($mensaje): ?>
-                <p style="color: red;"><strong><?= htmlspecialchars($mensaje) ?></strong></p>
-            <?php endif; ?>
-            <p><a href="index.php?page=registro">Registrarse</a> para crear una cuenta.</p>
-        </div>
-    <?php endif; ?>
+    <div class="formulario">
+        <h2>Iniciar sesión</h2>
+        <form action="index.php" method="post">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            <label for="passwd">Contraseña:</label>
+            <input type="password" name="passwd" id="passwd" required>
+            <input type="submit" class="btn" value="Iniciar sesión">
+        </form>
+        <?php if ($mensaje): ?>
+            <p class="error"><?= htmlspecialchars($mensaje) ?></p>
+        <?php endif; ?>
+        <p>¿No tienes cuenta? <a href="index.php?var=2">Regístrate</a></p>
+    </div>
 </body>
 </html>

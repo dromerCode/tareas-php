@@ -1,26 +1,6 @@
 <div class="cabecera">
-    <h1>
-        <a href="index.php?page=tareas">Gestor de tareas</a>
-    </h1>
-    <nav>
-        <?php if (isset($_SESSION['id_usuario'])): ?>
-        <span>Hola,
-            <strong><?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario') ?></strong>
-        </span>
-        |
-        <a href="index.php?page=tareas">Tareas</a>
-        |
-        <a href="index.php?page=nueva_tarea">+ Nueva tarea</a>
-        |
-        <?php if (($_SESSION['rol'] ?? '') === 'admin'): ?>
-        <a href="index.php?page=usuarios">Usuarios</a>
-        |
-        <?php endif; ?>
-        <a href="index.php?page=logout">Cerrar sesión</a>
-    <?php else: ?>
-        <a href="index.php?page=login">Iniciar sesión</a>
-        |
-        <a href="index.php?page=registro">Registrarse</a>
-        <?php endif; ?>
-    </nav>
+    <h1><a href="index.php">Gestor de tareas</a></h1>
+    <?php if (isset($_SESSION['id_usuario'])): ?>
+        <p>Hola, <strong><?= htmlspecialchars($_SESSION['nombre']) ?></strong> | <a href="logout.php">Cerrar sesión</a></p>
+    <?php endif; ?>
 </div>

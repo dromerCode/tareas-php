@@ -1,0 +1,89 @@
+<!-- Vista principal: pinta $tareas (y $usuarios si es admin), que prepara el controlador -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+
+    <?php if ($esAdmin): ?>
+        <!-- Solo el admin ve el formulario para crear tareas -->
+        <div class="formulario">
+            <h2>Nueva tarea</h2>
+            <form action="index.php" method="post">
+                <label for="crear_titulo">Título:</label>
+                <input type="text" name="crear_titulo" id="crear_titulo" required>
+                <label for="crear_descripcion">Descripción:</label>
+                <textarea name="crear_descripcion" id="crear_descripcion" rows="3"></textarea>
+                <label for="crear_usuario">Asignar a:</label>
+                <select name="crear_usuario" id="crear_usuario">
+                    <?php foreach ($usuarios as $u): ?>
+                        <option value="<?= $u->getId() ?>"><?= htmlspecialchars($u->getNombre()) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="submit" class="btn" value="Crear tarea">
+            </form>
+            <?php if ($mensaje): ?>
+                <p class="error"><?= htmlspecialchars($mensaje) ?></p>
+            <?php endif; ?>
+        </div>
+        <h2>Todas las tareas</h2>
+    <?php else: ?>
+        <h2>Mis tareas</h2>
+    <?php endif; ?>
+
+    <?php if (empty($tareas)): ?>
+        <p>No hay tareas.</p>
+    <?php else: ?>
+        <table>
+            <tr>
+                <th>Tarea</th>
+                <th>Estado</th>
+                <th>Asignada a</th>
+                <th></th>
+            </tr>
+            <?php foreach ($tareas as $tarea): ?>
+                <tr>
+                    <td>
+                        <strong><?= htmlspecialchars($tarea->getTitulo()) ?></strong><br>
+                        <small><?= htmlspecialchars($tarea->getDescripcion()) ?></small>
+                    </td>
+                    <!-- La clase es el estado, así cada uno sale de un color -->
+                    <td><span class="estado <?= $tarea->getEstado() ?>"><?= $tarea->getEstado() ?></span></td>
+                    <td><?= htmlspecialchars($tarea->getNombreUsuario()) ?></td>
+                    <td>
+                        <!-- Si la tarea es mía, puedo aceptarla o completarla -->
+                        <?php if ($tarea->getIdUsuario() == $_SESSION['id_usuario']): ?>
+                            <?php if ($tarea->getEstado() == 'pendiente'): ?>
+                                <form action="index.php" method="post">
+                                    <input type="hidden" name="aceptar" value="<?= $tarea->getId() ?>">
+                                    <input type="submit" class="btn verde" value="Aceptar">
+                                </form>
+                            <?php endif; ?>
+                            <?php if ($tarea->getEstado() == 'aceptada'): ?>
+                                <form action="index.php" method="post">
+                                    <input type="hidden" name="completar" value="<?= $tarea->getId() ?>">
+                                    <input type="submit" class="btn verde" value="Completar">
+                                </form>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <!-- El admin puede editar y borrar cualquier tarea -->
+                        <?php if ($esAdmin): ?>
+                            <a href="index.php?var=4&id=<?= $tarea->getId() ?>" class="btn">Editar</a>
+                            <form action="index.php" method="post" onsubmit="return confirm('¿Borrar esta tarea?')">
+                                <input type="hidden" name="borrar" value="<?= $tarea->getId() ?>">
+                                <input type="submit" class="btn rojo" value="Borrar">
+                            </form>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
+</body>
+</html>

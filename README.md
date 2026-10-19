@@ -1,6 +1,8 @@
 # Gestor de tareas (PHP + MariaDB)
 
-Mismo esquema que la tienda: `index.php` → `controllers/mainController.php`, que según `?page=` carga el controlador, que usa los repositorios (mysqli con sentencias preparadas) y acaba en una vista `.phtml`.
+Como el ejemplo del día 4: `index.php` carga `controllers/mainController.php`, que lo hace todo por secciones
+(registro, login, aceptar/completar, crear/editar/borrar) mirando qué llega por `$_POST`, y al final carga una vista.
+Las vistas se eligen con `?var=`: `2` registro, `4&id=...` editar tarea (admin). Sin sesión se ve el login.
 
 ## Arrancar
 
@@ -14,8 +16,5 @@ Usuarios de prueba (contraseña `1234`): `admin@tareas.test` (admin), `ana@tarea
 
 ## Qué hace
 
-- Login, registro y cerrar sesión.
-- Cualquier usuario crea tareas y las asigna a alguien (o a nadie).
-- Estados: **pendiente → aceptada → completada**. Acepta quien la tiene asignada (o cualquiera si no es de nadie, y se la queda); la completa quien la aceptó.
-- Editar y borrar: quien creó la tarea o el admin.
-- El admin ve todas las tareas y gestiona usuarios (hacer/quitar admin, borrar).
+- **Admin**: ve todas las tareas, las crea asignándolas a un usuario, las edita y las borra.
+- **Usuario**: solo ve sus tareas y las pasa de *pendiente* a *aceptada* y luego a *completada*.
