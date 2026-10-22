@@ -38,6 +38,8 @@
                     <option value="<?= $cat->getId() ?>" <?php if ($cat->getId() == $tarea->getIdCategoria()) echo 'selected'; ?>><?= htmlspecialchars($cat->getNombre()) ?></option>
                 <?php endforeach; ?>
             </select>
+            <label for="nueva_categoria">O crea una nueva:</label>
+            <input type="text" name="nueva_categoria" id="nueva_categoria">
             <input type="submit" class="btn" value="Guardar cambios">
         </form>
     </div>

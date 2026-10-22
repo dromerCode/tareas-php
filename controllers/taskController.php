@@ -8,6 +8,30 @@ $tareaRepository = new TareaRepository($db);
 $usuarioRepository = new UsuarioRepository($db);
 $categoriaRepository = new CategoriaRepository($db);
 
+// Devuelve el id de categoría que hay que guardar en la tarea (o null si no tiene).
+// $nueva es lo escrito en "O crea una nueva" y $seleccionada lo elegido en el desplegable.
+// Se usa al crear y al editar.
+function elegirCategoria($nueva, $seleccionada, $categoriaRepository){
+    // Si se ha escrito una categoría nueva, manda sobre el desplegable
+    $nueva = trim($nueva);
+    if ($nueva != "") {
+        // Si ya existe una con ese nombre se usa esa, porque el nombre es UNIQUE
+        $categoria = $categoriaRepository->findByNombre($nueva);
+        if ($categoria) {
+            return $categoria->getId();
+        }
+        // save() le pone a la categoría el id que le ha dado la base de datos
+        $categoria = new Categoria(null, $nueva);
+        $categoriaRepository->save($categoria);
+        return $categoria->getId();
+    }
+    // "Sin categoría" llega como "" y se guarda como NULL
+    if ($seleccionada == "") {
+        return null;
+    }
+    return (int) $seleccionada;
+}
+
 // ---------- ACEPTAR Y COMPLETAR (usuario) ----------
 // Solo se puede cambiar el estado de una tarea que tienes asignada tú.
 if (isset($_POST['aceptar'])) {
@@ -33,25 +57,7 @@ if ($usuario->esAdmin() && isset($_POST['crear_titulo'])) {
     if (trim($_POST['crear_titulo']) == "") {
         $mensaje = "El título no puede estar vacío";
     } else {
-        // Si se ha escrito una categoría nueva, manda sobre el desplegable
-        $nueva = trim($_POST['nueva_categoria']);
-        if ($nueva != "") {
-            // Si ya existe una con ese nombre se usa esa, porque el nombre es UNIQUE
-            $categoria = $categoriaRepository->findByNombre($nueva);
-            if ($categoria) {
-                $idCategoria = $categoria->getId();
-            } else {
-                // save() le pone a la categoría el id que le ha dado la base de datos
-                $categoria = new Categoria(null, $nueva);
-                $categoriaRepository->save($categoria);
-                $idCategoria = $categoria->getId();
-            }
-        } elseif ($_POST['crear_categoria'] == "") {
-            // "Sin categoría" llega como "" y se guarda como NULL
-            $idCategoria = null;
-        } else {
-            $idCategoria = (int) $_POST['crear_categoria'];
-        }
+        $idCategoria = elegirCategoria($_POST['nueva_categoria'], $_POST['crear_categoria'], $categoriaRepository);
         // El id es null porque lo pone la base de datos, y los nombres no hacen falta para guardar.
         $tarea = new Tarea(null, trim($_POST['crear_titulo']), trim($_POST['crear_descripcion']), 'pendiente', (int) $_POST['crear_usuario'], null, $idCategoria, null);
         $tareaRepository->save($tarea);
@@ -64,11 +70,7 @@ if ($usuario->esAdmin() && isset($_POST['editar_id'])) {
     if (trim($_POST['editar_titulo']) == "") {
         $mensaje = "El título no puede estar vacío";
     } else {
-        if ($_POST['editar_categoria'] == "") {
-            $idCategoria = null;
-        } else {
-            $idCategoria = (int) $_POST['editar_categoria'];
-        }
+        $idCategoria = elegirCategoria($_POST['nueva_categoria'], $_POST['editar_categoria'], $categoriaRepository);
         $tarea = new Tarea((int) $_POST['editar_id'], trim($_POST['editar_titulo']), trim($_POST['editar_descripcion']), $_POST['editar_estado'], (int) $_POST['editar_usuario'], null, $idCategoria, null);
         $tareaRepository->update($tarea);
         header("Location: index.php");
