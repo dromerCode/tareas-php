@@ -66,10 +66,13 @@ th a {
     text-decoration: none;
 }
 
-/* La columna por la que está ordenada sale subrayada */
-th a:hover,
-th a.activa {
+th a:hover {
     text-decoration: underline;
+}
+
+/* Flecha de la columna por la que está ordenada */
+.flecha {
+    opacity: 0.8;
 }
 
 /* Colores de cada estado */

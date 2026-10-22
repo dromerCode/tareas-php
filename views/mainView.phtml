@@ -54,7 +54,7 @@
                 <?php foreach ($columnas as $clave => $texto): ?>
                     <th>
                         <?php if ($orden == $clave): ?>
-                            <a href="index.php" class="activa"><?= $texto ?></a>
+                            <a href="index.php"><?= $texto ?> <span class="flecha">↓</span></a>
                         <?php else: ?>
                             <a href="index.php?orden=<?= $clave ?>"><?= $texto ?></a>
                         <?php endif; ?>
