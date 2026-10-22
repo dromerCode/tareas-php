@@ -70,9 +70,10 @@
                             <span class="etiqueta">Sin categoría</span>
                         <?php endif; ?>
                     </td>
-                    <!-- Si la tarea es mía, puedo aceptarla o completarla -->
-                    <?php if ($tarea->getIdUsuario() == $usuario->getId()): ?>
-                        <?php if ($tarea->getEstado() == 'pendiente'): ?>
+                    <td>
+                        <!-- Si la tarea es mía, puedo aceptarla o completarla -->
+                        <?php if ($tarea->getIdUsuario() == $usuario->getId()): ?>
+                            <?php if ($tarea->getEstado() == 'pendiente'): ?>
                                 <form action="index.php" method="post">
                                     <input type="hidden" name="aceptar" value="<?= $tarea->getId() ?>">
                                     <input type="submit" class="btn verde" value="Aceptar">
