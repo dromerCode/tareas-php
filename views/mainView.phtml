@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tareas</title>
     <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/nuevaCategoria.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/header.phtml'; ?>
@@ -26,14 +27,18 @@
                     <?php endforeach; ?>
                 </select>
                 <label for="crear_categoria">Categoría:</label>
-                <select name="crear_categoria" id="crear_categoria">
+                <select name="crear_categoria" id="crear_categoria" onchange="mostrarNuevaCategoria(this)">
                     <option value="">Sin categoría</option>
                     <?php foreach ($categorias as $cat): ?>
                         <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getNombre()) ?></option>
                     <?php endforeach; ?>
+                    <option value="nueva">+ Nueva categoría...</option>
                 </select>
-                <label for="nueva_categoria">O crea una nueva:</label>
-                <input type="text" name="nueva_categoria" id="nueva_categoria">
+                <!-- Oculto hasta que se elige "+ Nueva categoría..." (lo enseña js/nuevaCategoria.js) -->
+                <div id="caja_nueva_categoria" hidden>
+                    <label for="nueva_categoria">Nombre de la categoría:</label>
+                    <input type="text" name="nueva_categoria" id="nueva_categoria">
+                </div>
                 <input type="submit" class="btn" value="Crear tarea">
             </form>
             <?php if ($mensaje): ?>

@@ -9,12 +9,12 @@ $usuarioRepository = new UsuarioRepository($db);
 $categoriaRepository = new CategoriaRepository($db);
 
 // Devuelve el id de categoría que hay que guardar en la tarea (o null si no tiene).
-// $nueva es lo escrito en "O crea una nueva" y $seleccionada lo elegido en el desplegable.
+// $seleccionada es lo elegido en el desplegable y $nueva lo escrito en "Nombre de la categoría",
+// que solo cuenta si en el desplegable se ha elegido "+ Nueva categoría...".
 // Se usa al crear y al editar.
 function elegirCategoria($nueva, $seleccionada, $categoriaRepository){
-    // Si se ha escrito una categoría nueva, manda sobre el desplegable
     $nueva = trim($nueva);
-    if ($nueva != "") {
+    if ($seleccionada == "nueva" && $nueva != "") {
         // Si ya existe una con ese nombre se usa esa, porque el nombre es UNIQUE
         $categoria = $categoriaRepository->findByNombre($nueva);
         if ($categoria) {
@@ -25,8 +25,9 @@ function elegirCategoria($nueva, $seleccionada, $categoriaRepository){
         $categoriaRepository->save($categoria);
         return $categoria->getId();
     }
-    // "Sin categoría" llega como "" y se guarda como NULL
-    if ($seleccionada == "") {
+    // "Sin categoría" llega como "" y se guarda como NULL.
+    // También si se eligió "nueva" pero no se escribió nada.
+    if ($seleccionada == "" || $seleccionada == "nueva") {
         return null;
     }
     return (int) $seleccionada;
