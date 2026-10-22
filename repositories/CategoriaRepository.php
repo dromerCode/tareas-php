@@ -19,4 +19,24 @@ class CategoriaRepository{
         }
         return $categorias;
     }
+
+    public function findByNombre($nombre){
+        $stmt = $this->db->prepare("SELECT id_categoria, nombre FROM categoria WHERE nombre = ?");
+        $stmt->bind_param("s", $nombre);
+        $stmt->execute();
+        $fila = $stmt->get_result()->fetch_assoc();
+
+        if (!$fila) {
+            return null;
+        }
+        return new Categoria($fila['id_categoria'], $fila['nombre']);
+    }
+
+    public function save(Categoria $categoria){
+        $stmt = $this->db->prepare("INSERT INTO categoria (nombre) VALUES (?)");
+        $nombre = $categoria->getNombre();
+        $stmt->bind_param("s", $nombre);
+        $stmt->execute();
+        $categoria->setId($this->db->insert_id);
+    }
 }

@@ -33,8 +33,21 @@ if ($usuario->esAdmin() && isset($_POST['crear_titulo'])) {
     if (trim($_POST['crear_titulo']) == "") {
         $mensaje = "El título no puede estar vacío";
     } else {
-        // "Sin categoría" llega como "" y se guarda como NULL
-        if ($_POST['crear_categoria'] == "") {
+        // Si se ha escrito una categoría nueva, manda sobre el desplegable
+        $nueva = trim($_POST['nueva_categoria']);
+        if ($nueva != "") {
+            // Si ya existe una con ese nombre se usa esa, porque el nombre es UNIQUE
+            $categoria = $categoriaRepository->findByNombre($nueva);
+            if ($categoria) {
+                $idCategoria = $categoria->getId();
+            } else {
+                // save() le pone a la categoría el id que le ha dado la base de datos
+                $categoria = new Categoria(null, $nueva);
+                $categoriaRepository->save($categoria);
+                $idCategoria = $categoria->getId();
+            }
+        } elseif ($_POST['crear_categoria'] == "") {
+            // "Sin categoría" llega como "" y se guarda como NULL
             $idCategoria = null;
         } else {
             $idCategoria = (int) $_POST['crear_categoria'];

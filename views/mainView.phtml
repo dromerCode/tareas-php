@@ -32,6 +32,8 @@
                         <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getNombre()) ?></option>
                     <?php endforeach; ?>
                 </select>
+                <label for="nueva_categoria">O crea una nueva:</label>
+                <input type="text" name="nueva_categoria" id="nueva_categoria">
                 <input type="submit" class="btn" value="Crear tarea">
             </form>
             <?php if ($mensaje): ?>

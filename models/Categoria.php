@@ -16,4 +16,8 @@ class Categoria{
     public function getNombre(){
         return $this->nombre;
     }
+    // Lo usa el repositorio al guardar, para poner el id que ha dado la base de datos
+    public function setId($id){
+        $this->id = $id;
+    }
 }
