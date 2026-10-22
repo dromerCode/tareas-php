@@ -12,20 +12,20 @@ class TareaRepository{
 
     // Todas las tareas (solo las ve el admin). El JOIN es para sacar el nombre del usuario.
     public function findAll(){
-        $resultado = $this->db->query("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre
-            FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario
+        $resultado = $this->db->query("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
+            FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
             ORDER BY t.id_tarea DESC");
         $tareas = array();
         while ($fila = $resultado->fetch_assoc()) {
-            $tareas[] = new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre']);
+            $tareas[] = new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre'], $fila['id_categoria'], $fila['nombre_categoria']);
         }
         return $tareas;
     }
 
     // Las tareas asignadas a un usuario.
     public function findByUsuario($idUsuario){
-        $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre
-            FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario
+        $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
+            FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
             WHERE t.id_usuario = ?
             ORDER BY t.id_tarea DESC");
         $stmt->bind_param("i", $idUsuario);
@@ -33,15 +33,15 @@ class TareaRepository{
         $resultado = $stmt->get_result();
         $tareas = array();
         while ($fila = $resultado->fetch_assoc()) {
-            $tareas[] = new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre']);
+            $tareas[] = new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre'], $fila['id_categoria'], $fila['nombre_categoria']);
         }
         return $tareas;
     }
 
     // Una tarea por su id, o null si no existe.
     public function findById($id){
-        $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre
-            FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario
+        $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
+            FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
             WHERE t.id_tarea = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -50,28 +50,30 @@ class TareaRepository{
         if (!$fila) {
             return null;
         }
-        return new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre']);
+        return new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre'], $fila['id_categoria'], $fila['nombre_categoria']);
     }
 
     // Guarda una tarea nueva. Empieza como 'pendiente' (lo pone la base de datos).
     public function save(Tarea $tarea){
-        $stmt = $this->db->prepare("INSERT INTO tarea (titulo, descripcion, id_usuario) VALUES (?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO tarea (titulo, descripcion, id_usuario, id_categoria) VALUES (?, ?, ?, ?)");
         $titulo = $tarea->getTitulo();
         $descripcion = $tarea->getDescripcion();
         $idUsuario = $tarea->getIdUsuario();
-        $stmt->bind_param("ssi", $titulo, $descripcion, $idUsuario);
+        $idCategoria = $tarea->getIdCategoria();
+        $stmt->bind_param("ssii", $titulo, $descripcion, $idUsuario, $idCategoria);
         $stmt->execute();
     }
 
     // Guarda los cambios de una tarea que ya existe.
     public function update(Tarea $tarea){
-        $stmt = $this->db->prepare("UPDATE tarea SET titulo = ?, descripcion = ?, estado = ?, id_usuario = ? WHERE id_tarea = ?");
+        $stmt = $this->db->prepare("UPDATE tarea SET titulo = ?, descripcion = ?, estado = ?, id_usuario = ?, id_categoria = ? WHERE id_tarea = ?");
         $titulo = $tarea->getTitulo();
         $descripcion = $tarea->getDescripcion();
         $estado = $tarea->getEstado();
         $idUsuario = $tarea->getIdUsuario();
+        $idCategoria = $tarea->getIdCategoria();
         $id = $tarea->getId();
-        $stmt->bind_param("sssii", $titulo, $descripcion, $estado, $idUsuario, $id);
+        $stmt->bind_param("sssiii", $titulo, $descripcion, $estado, $idUsuario, $idCategoria, $id);
         $stmt->execute();
     }
 

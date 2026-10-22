@@ -31,6 +31,13 @@
                     <option value="<?= $u->getId() ?>" <?php if ($u->getId() == $tarea->getIdUsuario()) echo 'selected'; ?>><?= htmlspecialchars($u->getNombre()) ?></option>
                 <?php endforeach; ?>
             </select>
+            <label for="editar_categoria">Categoría:</label>
+            <select name="editar_categoria" id="editar_categoria">
+                <option value="">Sin categoría</option>
+                <?php foreach ($categorias as $cat): ?>
+                    <option value="<?= $cat->getId() ?>" <?php if ($cat->getId() == $tarea->getIdCategoria()) echo 'selected'; ?>><?= htmlspecialchars($cat->getNombre()) ?></option>
+                <?php endforeach; ?>
+            </select>
             <input type="submit" class="btn" value="Guardar cambios">
         </form>
     </div>

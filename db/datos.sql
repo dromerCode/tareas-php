@@ -7,7 +7,13 @@ INSERT INTO usuario (nombre, email, contrasena, rol) VALUES
   ('Ana', 'ana@tareas.test', '$2y$12$1iDFNcISWOGtuL7l4/IiPeV4N.SKcTbhKtluu.OtrY4QcNA5owATC', 'usuario'),
   ('Luis', 'luis@tareas.test', '$2y$12$1iDFNcISWOGtuL7l4/IiPeV4N.SKcTbhKtluu.OtrY4QcNA5owATC', 'usuario');
 
-INSERT INTO tarea (titulo, descripcion, estado, id_usuario) VALUES
-  ('Preparar la reunión del lunes', 'Hacer el orden del día y mandarlo a todos.', 'pendiente', 2),
-  ('Revisar el informe de ventas', 'Comprobar que cuadran los números.', 'aceptada', 3),
-  ('Actualizar la web', 'Cambiar los horarios de la página de contacto.', 'completada', 2);
+INSERT INTO categoria (nombre) VALUES
+  ('Trabajo'),
+  ('Personal'),
+  ('Urgente');
+
+-- La última se queda sin categoría (NULL) para probar ese caso
+INSERT INTO tarea (titulo, descripcion, estado, id_usuario, id_categoria) VALUES
+  ('Preparar la reunión del lunes', 'Hacer el orden del día y mandarlo a todos.', 'pendiente', 2, 1),
+  ('Revisar el informe de ventas', 'Comprobar que cuadran los números.', 'aceptada', 3, 3),
+  ('Actualizar la web', 'Cambiar los horarios de la página de contacto.', 'completada', 2, NULL);

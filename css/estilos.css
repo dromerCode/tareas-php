@@ -79,6 +79,16 @@ th {
     background: green;
 }
 
+/* Etiqueta de la categoría: con borde y sin relleno fuerte para no confundirla con el estado */
+.etiqueta {
+    padding: 0.1rem 0.6rem;
+    border: 1px solid teal;
+    border-radius: 999px;
+    background: #e0f2f1;
+    color: teal;
+    font-size: 0.85rem;
+}
+
 /* Formularios */
 .formulario {
     background: white;

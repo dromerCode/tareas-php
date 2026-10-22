@@ -25,6 +25,13 @@
                         <option value="<?= $u->getId() ?>"><?= htmlspecialchars($u->getNombre()) ?></option>
                     <?php endforeach; ?>
                 </select>
+                <label for="crear_categoria">Categoría:</label>
+                <select name="crear_categoria" id="crear_categoria">
+                    <option value="">Sin categoría</option>
+                    <?php foreach ($categorias as $cat): ?>
+                        <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getNombre()) ?></option>
+                    <?php endforeach; ?>
+                </select>
                 <input type="submit" class="btn" value="Crear tarea">
             </form>
             <?php if ($mensaje): ?>
@@ -44,6 +51,7 @@
                 <th>Tarea</th>
                 <th>Estado</th>
                 <th>Asignada a</th>
+                <th>Categoría</th>
                 <th></th>
             </tr>
             <?php foreach ($tareas as $tarea): ?>
@@ -56,9 +64,15 @@
                     <td><span class="estado <?= $tarea->getEstado() ?>"><?= $tarea->getEstado() ?></span></td>
                     <td><?= htmlspecialchars($tarea->getNombreUsuario()) ?></td>
                     <td>
-                        <!-- Si la tarea es mía, puedo aceptarla o completarla -->
-                        <?php if ($tarea->getIdUsuario() == $usuario->getId()): ?>
-                            <?php if ($tarea->getEstado() == 'pendiente'): ?>
+                        <?php if ($tarea->getNombreCategoria() != null): ?>
+                            <span class="etiqueta"><?= htmlspecialchars($tarea->getNombreCategoria()) ?></span>
+                        <?php else: ?>
+                            <span class="etiqueta">Sin categoría</span>
+                        <?php endif; ?>
+                    </td>
+                    <!-- Si la tarea es mía, puedo aceptarla o completarla -->
+                    <?php if ($tarea->getIdUsuario() == $usuario->getId()): ?>
+                        <?php if ($tarea->getEstado() == 'pendiente'): ?>
                                 <form action="index.php" method="post">
                                     <input type="hidden" name="aceptar" value="<?= $tarea->getId() ?>">
                                     <input type="submit" class="btn verde" value="Aceptar">

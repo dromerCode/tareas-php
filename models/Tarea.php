@@ -11,14 +11,18 @@ class Tarea{
     private $idUsuario;
     // Nombre del usuario asignado, para enseñarlo en la lista
     private $nombreUsuario;
+    private $idCategoria;
+    private $nombreCategoria;
 
-    public function __construct($id, $titulo, $descripcion, $estado, $idUsuario, $nombreUsuario){
+    public function __construct($id, $titulo, $descripcion, $estado, $idUsuario, $nombreUsuario, $idCategoria, $nombreCategoria){
         $this->id = $id;
         $this->titulo = $titulo;
         $this->descripcion = $descripcion;
         $this->estado = $estado;
         $this->idUsuario = $idUsuario;
         $this->nombreUsuario = $nombreUsuario;
+        $this->idCategoria = $idCategoria;
+        $this->nombreCategoria = $nombreCategoria;
     }
 
     public function getId(){
@@ -38,5 +42,11 @@ class Tarea{
     }
     public function getNombreUsuario(){
         return $this->nombreUsuario;
+    }
+    public function getIdCategoria(){
+        return $this->idCategoria;
+    }
+    public function getNombreCategoria(){
+        return $this->nombreCategoria;
     }
 }
