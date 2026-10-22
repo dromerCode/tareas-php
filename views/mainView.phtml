@@ -48,10 +48,18 @@
     <?php else: ?>
         <table>
             <tr>
-                <th>Tarea</th>
-                <th>Estado</th>
-                <th>Asignada a</th>
-                <th>Categoría</th>
+                <!-- Cada cabecera es un enlace para ordenar por esa columna.
+                     Si ya está ordenada por ella, el enlace quita el orden. -->
+                <?php $columnas = array('tarea' => 'Tarea', 'estado' => 'Estado', 'usuario' => 'Asignada a', 'categoria' => 'Categoría'); ?>
+                <?php foreach ($columnas as $clave => $texto): ?>
+                    <th>
+                        <?php if ($orden == $clave): ?>
+                            <a href="index.php"><?= $texto ?> ▲</a>
+                        <?php else: ?>
+                            <a href="index.php?orden=<?= $clave ?>"><?= $texto ?></a>
+                        <?php endif; ?>
+                    </th>
+                <?php endforeach; ?>
                 <th></th>
             </tr>
             <?php foreach ($tareas as $tarea): ?>

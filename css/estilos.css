@@ -60,6 +60,16 @@ th {
     color: white;
 }
 
+/* Enlaces de las cabeceras para ordenar */
+th a {
+    color: white;
+    text-decoration: none;
+}
+
+th a:hover {
+    text-decoration: underline;
+}
+
 /* Colores de cada estado */
 .estado {
     padding: 0.2rem 0.5rem;

@@ -82,11 +82,16 @@ if ($usuario->esAdmin() && isset($_GET['var']) && $_GET['var'] == 4) {
 }
 
 // Página principal: el admin ve todas las tareas, el usuario solo las suyas.
+// ?orden=... -> columna por la que se ordena la tabla (el repositorio comprueba que sea válida)
+$orden = null;
+if (isset($_GET['orden'])) {
+    $orden = $_GET['orden'];
+}
 if ($usuario->esAdmin()) {
     $categorias = $categoriaRepository->findAll();
-    $tareas = $tareaRepository->findAll();
+    $tareas = $tareaRepository->findAll($orden);
     $usuarios = $usuarioRepository->findAll();
 } else {
-    $tareas = $tareaRepository->findByUsuario($usuario->getId());
+    $tareas = $tareaRepository->findByUsuario($usuario->getId(), $orden);
 }
 require __DIR__ . '/../views/mainView.phtml';

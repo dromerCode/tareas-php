@@ -10,11 +10,29 @@ class TareaRepository{
         $this->db = $db;
     }
 
+    // Devuelve el ORDER BY según la columna elegida en la tabla.
+    // No se puede usar ? para el ORDER BY, así que solo se aceptan estos valores escritos aquí;
+    // cualquier otra cosa que llegue por la URL deja el orden normal (las más nuevas primero).
+    private function ordenarPor($orden){
+        if ($orden == 'tarea') {
+            return "ORDER BY t.titulo, t.id_tarea DESC";
+        } elseif ($orden == 'estado') {
+            // estado es un ENUM, así que se ordena como está definido: pendiente, aceptada, completada
+            return "ORDER BY t.estado, t.id_tarea DESC";
+        } elseif ($orden == 'usuario') {
+            return "ORDER BY u.nombre, t.id_tarea DESC";
+        } elseif ($orden == 'categoria') {
+            // Las que no tienen categoría (NULL) al final
+            return "ORDER BY c.nombre IS NULL, c.nombre, t.id_tarea DESC";
+        }
+        return "ORDER BY t.id_tarea DESC";
+    }
+
     // Todas las tareas (solo las ve el admin). El JOIN es para sacar el nombre del usuario.
-    public function findAll(){
+    public function findAll($orden = null){
         $resultado = $this->db->query("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
             FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
-            ORDER BY t.id_tarea DESC");
+            " . $this->ordenarPor($orden));
         $tareas = array();
         while ($fila = $resultado->fetch_assoc()) {
             $tareas[] = new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre'], $fila['id_categoria'], $fila['nombre_categoria']);
@@ -23,11 +41,11 @@ class TareaRepository{
     }
 
     // Las tareas asignadas a un usuario.
-    public function findByUsuario($idUsuario){
+    public function findByUsuario($idUsuario, $orden = null){
         $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
             FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
             WHERE t.id_usuario = ?
-            ORDER BY t.id_tarea DESC");
+            " . $this->ordenarPor($orden));
         $stmt->bind_param("i", $idUsuario);
         $stmt->execute();
         $resultado = $stmt->get_result();
