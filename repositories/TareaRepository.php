@@ -17,8 +17,8 @@ class TareaRepository{
         if ($orden == 'tarea') {
             return "ORDER BY t.titulo, t.id_tarea DESC";
         } elseif ($orden == 'estado') {
-            // estado es un ENUM, así que se ordena como está definido: pendiente, aceptada, completada
-            return "ORDER BY t.estado, t.id_tarea DESC";
+            // estado es un ENUM y se ordenaría como está definido; con CAST se ordena por el texto (alfabético)
+            return "ORDER BY CAST(t.estado AS CHAR), t.id_tarea DESC";
         } elseif ($orden == 'usuario') {
             return "ORDER BY u.nombre, t.id_tarea DESC";
         } elseif ($orden == 'categoria') {

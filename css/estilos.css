@@ -66,7 +66,9 @@ th a {
     text-decoration: none;
 }
 
-th a:hover {
+/* La columna por la que está ordenada sale subrayada */
+th a:hover,
+th a.activa {
     text-decoration: underline;
 }
 
