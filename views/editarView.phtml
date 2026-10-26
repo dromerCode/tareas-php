@@ -1,4 +1,4 @@
-<!-- Vista para que el admin edite una tarea: $tarea y $usuarios vienen del controlador -->
+<!-- Editar tarea (admin) -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,8 +13,8 @@
     <div class="formulario">
         <a href="index.php">&larr; Volver</a>
         <h2>Editar tarea</h2>
-        <form action="index.php" method="post">
-            <!-- El id va oculto para saber qué tarea estamos editando -->
+        <form action="index.php?var=4&id=<?= $tarea->getId() ?>" method="post">
+            <!-- id de la tarea que se edita -->
             <input type="hidden" name="editar_id" value="<?= $tarea->getId() ?>">
             <label for="editar_titulo">Título:</label>
             <input type="text" name="editar_titulo" id="editar_titulo" value="<?= htmlspecialchars($tarea->getTitulo()) ?>" required>
@@ -40,13 +40,16 @@
                 <?php endforeach; ?>
                 <option value="nueva">+ Nueva categoría...</option>
             </select>
-            <!-- Oculto hasta que se elige "+ Nueva categoría..." (lo enseña js/nuevaCategoria.js) -->
+            <!-- sale al elegir "nueva categoria" -->
             <div id="caja_nueva_categoria" hidden>
                 <label for="nueva_categoria">Nombre de la categoría:</label>
                 <input type="text" name="nueva_categoria" id="nueva_categoria">
             </div>
             <input type="submit" class="btn" value="Guardar cambios">
         </form>
+        <?php if ($mensaje): ?>
+            <p class="error"><?= htmlspecialchars($mensaje) ?></p>
+        <?php endif; ?>
     </div>
 </body>
 </html>

@@ -37,12 +37,12 @@ body {
     background: firebrick;
 }
 
-/* Los formularios de los botones de la tabla, uno al lado del otro */
+/* botones de la tabla en linea */
 td form {
     display: inline;
 }
 
-/* Tabla de tareas */
+/* Tabla */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -60,7 +60,6 @@ th {
     color: white;
 }
 
-/* Enlaces de las cabeceras para ordenar */
 th a {
     color: white;
     text-decoration: none;
@@ -70,12 +69,11 @@ th a:hover {
     text-decoration: underline;
 }
 
-/* Flecha de la columna por la que está ordenada */
 .flecha {
     opacity: 0.8;
 }
 
-/* Colores de cada estado */
+/* Colores de los estados */
 .estado {
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
@@ -94,7 +92,7 @@ th a:hover {
     background: green;
 }
 
-/* Etiqueta de la categoría: con borde y sin relleno fuerte para no confundirla con el estado */
+/* Etiqueta de categoria */
 .etiqueta {
     padding: 0.1rem 0.6rem;
     border: 1px solid teal;

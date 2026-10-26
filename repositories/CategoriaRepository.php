@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/Categoria.php';
 
-// Repositorio de categorías: es la única clase que habla con la tabla "categoria".
+// Repositorio de categorias
 class CategoriaRepository{
     private mysqli $db;
 
@@ -10,7 +10,7 @@ class CategoriaRepository{
         $this->db = $db;
     }
 
-    // Devuelve todas las categorías (para el desplegable de "Categoría").
+    // todas las categorias, para el desplegable
     public function findAll(){
         $resultado = $this->db->query("SELECT id_categoria, nombre FROM categoria ORDER BY nombre");
         $categorias = array();
@@ -37,6 +37,5 @@ class CategoriaRepository{
         $nombre = $categoria->getNombre();
         $stmt->bind_param("s", $nombre);
         $stmt->execute();
-        $categoria->setId($this->db->insert_id);
     }
 }

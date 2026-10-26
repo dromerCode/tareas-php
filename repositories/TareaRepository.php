@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/Tarea.php';
 
-// Repositorio de tareas: es la única clase que habla con la tabla "tarea".
+// Repositorio de tareas
 class TareaRepository{
     private mysqli $db;
 
@@ -10,25 +10,24 @@ class TareaRepository{
         $this->db = $db;
     }
 
-    // Devuelve el ORDER BY según la columna elegida en la tabla.
-    // No se puede usar ? para el ORDER BY, así que solo se aceptan estos valores escritos aquí;
-    // cualquier otra cosa que llegue por la URL deja el orden normal (las más nuevas primero).
+    // ORDER BY segun la columna elegida
+    // (en el ORDER BY no se puede usar ?, por eso solo valen estos)
     private function ordenarPor($orden){
         if ($orden == 'tarea') {
             return "ORDER BY t.titulo, t.id_tarea DESC";
         } elseif ($orden == 'estado') {
-            // estado es un ENUM y se ordenaría como está definido; con CAST se ordena por el texto (alfabético)
+            // con CAST el ENUM se ordena alfabeticamente
             return "ORDER BY CAST(t.estado AS CHAR), t.id_tarea DESC";
         } elseif ($orden == 'usuario') {
             return "ORDER BY u.nombre, t.id_tarea DESC";
         } elseif ($orden == 'categoria') {
-            // Las que no tienen categoría (NULL) al final
+            // las que no tienen categoria al final
             return "ORDER BY c.nombre IS NULL, c.nombre, t.id_tarea DESC";
         }
         return "ORDER BY t.id_tarea DESC";
     }
 
-    // Todas las tareas (solo las ve el admin). El JOIN es para sacar el nombre del usuario.
+    // todas las tareas (admin)
     public function findAll($orden = null){
         $resultado = $this->db->query("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
             FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
@@ -40,7 +39,7 @@ class TareaRepository{
         return $tareas;
     }
 
-    // Las tareas asignadas a un usuario.
+    // las tareas de un usuario
     public function findByUsuario($idUsuario, $orden = null){
         $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
             FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
@@ -56,7 +55,7 @@ class TareaRepository{
         return $tareas;
     }
 
-    // Una tarea por su id, o null si no existe.
+    // una tarea por su id (o null)
     public function findById($id){
         $stmt = $this->db->prepare("SELECT t.id_tarea, t.titulo, t.descripcion, t.estado, t.id_usuario, u.nombre, c.id_categoria, c.nombre AS nombre_categoria
             FROM tarea t JOIN usuario u ON u.id_usuario = t.id_usuario LEFT JOIN categoria c ON c.id_categoria = t.id_categoria
@@ -71,7 +70,7 @@ class TareaRepository{
         return new Tarea($fila['id_tarea'], $fila['titulo'], $fila['descripcion'], $fila['estado'], $fila['id_usuario'], $fila['nombre'], $fila['id_categoria'], $fila['nombre_categoria']);
     }
 
-    // Guarda una tarea nueva. Empieza como 'pendiente' (lo pone la base de datos).
+    // guardar tarea nueva (empieza pendiente)
     public function save(Tarea $tarea){
         $stmt = $this->db->prepare("INSERT INTO tarea (titulo, descripcion, id_usuario, id_categoria) VALUES (?, ?, ?, ?)");
         $titulo = $tarea->getTitulo();
@@ -82,7 +81,7 @@ class TareaRepository{
         $stmt->execute();
     }
 
-    // Guarda los cambios de una tarea que ya existe.
+    // guardar cambios
     public function update(Tarea $tarea){
         $stmt = $this->db->prepare("UPDATE tarea SET titulo = ?, descripcion = ?, estado = ?, id_usuario = ?, id_categoria = ? WHERE id_tarea = ?");
         $titulo = $tarea->getTitulo();
@@ -95,7 +94,7 @@ class TareaRepository{
         $stmt->execute();
     }
 
-    // Cambia solo el estado (para aceptar y completar).
+    // cambiar solo el estado
     public function cambiarEstado($id, $estado){
         $stmt = $this->db->prepare("UPDATE tarea SET estado = ? WHERE id_tarea = ?");
         $stmt->bind_param("si", $estado, $id);

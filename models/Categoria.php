@@ -1,6 +1,6 @@
 <?php
 
-// Clase que representa una categoría de la aplicación.
+// Clase Categoria
 class Categoria{
     private $id;
     private $nombre;
@@ -15,9 +15,5 @@ class Categoria{
     }
     public function getNombre(){
         return $this->nombre;
-    }
-    // Lo usa el repositorio al guardar, para poner el id que ha dado la base de datos
-    public function setId($id){
-        $this->id = $id;
     }
 }

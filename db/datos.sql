@@ -1,4 +1,4 @@
--- Datos de prueba. Los tres usuarios tienen la contraseña 1234
+-- Datos de prueba (contraseña 1234)
 
 USE tareas;
 
@@ -12,7 +12,7 @@ INSERT INTO categoria (nombre) VALUES
   ('Personal'),
   ('Urgente');
 
--- La última se queda sin categoría (NULL) para probar ese caso
+-- la ultima sin categoria
 INSERT INTO tarea (titulo, descripcion, estado, id_usuario, id_categoria) VALUES
   ('Preparar la reunión del lunes', 'Hacer el orden del día y mandarlo a todos.', 'pendiente', 2, 1),
   ('Revisar el informe de ventas', 'Comprobar que cuadran los números.', 'aceptada', 3, 3),

@@ -1,4 +1,4 @@
--- Esquema del gestor de tareas
+-- Base de datos del gestor de tareas
 
 CREATE DATABASE IF NOT EXISTS tareas
   CHARACTER SET utf8mb4
@@ -6,7 +6,7 @@ CREATE DATABASE IF NOT EXISTS tareas
 
 USE tareas;
 
--- Usuarios. El rol admin puede crear, editar, borrar y ver todas las tareas
+-- Usuarios
 CREATE TABLE usuario (
   id_usuario  INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nombre      VARCHAR(80)  NOT NULL,
@@ -17,14 +17,14 @@ CREATE TABLE usuario (
   PRIMARY KEY (id_usuario)
 );
 
--- Categorías para etiquetar las tareas
+-- Categorias
 CREATE TABLE categoria (
   id_categoria  INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nombre        VARCHAR(50)  NOT NULL UNIQUE,
   PRIMARY KEY (id_categoria)
 );
 
--- Tareas. Cada tarea está asignada a un usuario y puede tener una categoría
+-- Tareas
 CREATE TABLE tarea (
   id_tarea    INT UNSIGNED NOT NULL AUTO_INCREMENT,
   titulo      VARCHAR(150) NOT NULL,

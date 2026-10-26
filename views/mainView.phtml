@@ -1,4 +1,4 @@
-<!-- Vista principal: pinta $tareas (y $usuarios si es admin), que prepara el controlador -->
+<!-- Lista de tareas -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +12,7 @@
     <?php require __DIR__ . '/header.phtml'; ?>
 
     <?php if ($usuario->esAdmin()): ?>
-        <!-- Solo el admin ve el formulario para crear tareas -->
+        <!-- solo el admin crea tareas -->
         <div class="formulario">
             <h2>Nueva tarea</h2>
             <form action="index.php" method="post">
@@ -34,7 +34,7 @@
                     <?php endforeach; ?>
                     <option value="nueva">+ Nueva categoría...</option>
                 </select>
-                <!-- Oculto hasta que se elige "+ Nueva categoría..." (lo enseña js/nuevaCategoria.js) -->
+                <!-- sale al elegir "nueva categoria" -->
                 <div id="caja_nueva_categoria" hidden>
                     <label for="nueva_categoria">Nombre de la categoría:</label>
                     <input type="text" name="nueva_categoria" id="nueva_categoria">
@@ -55,8 +55,7 @@
     <?php else: ?>
         <table>
             <tr>
-                <!-- Cada cabecera es un enlace para ordenar por esa columna.
-                     Si ya está ordenada por ella, el enlace quita el orden. -->
+                <!-- pinchando en la cabecera se ordena por esa columna -->
                 <?php $columnas = array('tarea' => 'Tarea', 'estado' => 'Estado', 'usuario' => 'Asignada a', 'categoria' => 'Categoría'); ?>
                 <?php foreach ($columnas as $clave => $texto): ?>
                     <th>
@@ -75,7 +74,7 @@
                         <strong><?= htmlspecialchars($tarea->getTitulo()) ?></strong><br>
                         <small><?= htmlspecialchars($tarea->getDescripcion()) ?></small>
                     </td>
-                    <!-- La clase es el estado, así cada uno sale de un color -->
+                    <!-- cada estado de un color -->
                     <td><span class="estado <?= $tarea->getEstado() ?>"><?= $tarea->getEstado() ?></span></td>
                     <td><?= htmlspecialchars($tarea->getNombreUsuario()) ?></td>
                     <td>
@@ -86,7 +85,7 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                        <!-- Si la tarea es mía, puedo aceptarla o completarla -->
+                        <!-- si es mia la puedo aceptar o completar -->
                         <?php if ($tarea->getIdUsuario() == $usuario->getId()): ?>
                             <?php if ($tarea->getEstado() == 'pendiente'): ?>
                                 <form action="index.php" method="post">
@@ -102,7 +101,7 @@
                             <?php endif; ?>
                         <?php endif; ?>
 
-                        <!-- El admin puede editar y borrar cualquier tarea -->
+                        <!-- el admin edita y borra -->
                         <?php if ($usuario->esAdmin()): ?>
                             <a href="index.php?var=4&id=<?= $tarea->getId() ?>" class="btn">Editar</a>
                             <form action="index.php" method="post" onsubmit="return confirm('¿Borrar esta tarea?')">

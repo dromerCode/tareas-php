@@ -1,12 +1,12 @@
 <?php
 
-// Clase que representa un usuario de la aplicación.
+// Clase Usuario
 class Usuario{
     private $id;
     private $nombre;
     private $email;
     private $password;
-    // 'usuario' o 'admin'
+    // usuario o admin
     private $rol;
 
     public function __construct($id, $nombre, $email, $password, $rol){
@@ -29,11 +29,7 @@ class Usuario{
     public function getPassword(){
         return $this->password;
     }
-    public function getRol(){
-        return $this->rol;
-    }
 
-    // Devuelve true si el usuario es administrador
     public function esAdmin(){
         return $this->rol == 'admin';
     }

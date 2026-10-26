@@ -1,15 +1,14 @@
 <?php
 
-// Clase que representa una tarea.
+// Clase Tarea
 class Tarea{
     private $id;
     private $titulo;
     private $descripcion;
-    // 'pendiente', 'aceptada' o 'completada'
+    // pendiente, aceptada o completada
     private $estado;
-    // id del usuario que tiene asignada la tarea
+    // usuario asignado
     private $idUsuario;
-    // Nombre del usuario asignado, para enseñarlo en la lista
     private $nombreUsuario;
     private $idCategoria;
     private $nombreCategoria;
